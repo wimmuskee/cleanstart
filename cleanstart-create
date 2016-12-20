@@ -1,0 +1,80 @@
+#!/bin/bash
+#
+# cleanstart-create is part of the cleanstart package
+#
+# Copyright 2016 Wim Muskee
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+SHARE_PATH="/usr/share/cleanstart"
+
+if [[ -f share/common.sh ]]; then
+	SHARE_PATH="share"
+fi
+
+source "${SHARE_PATH}/common.sh"
+
+
+# Reading options
+if ! args=$(getopt -n "$0" -o "c:hp:v" \
+	-l "config:,help,profile:,version" -- "$@")
+then
+	exit 1
+fi
+eval "set -- $args"
+while true ; do
+	case "$1" in
+		--config|-c) shift; CONFIGFILE=$1 ;;
+		--help|-h) usage; exit 0 ;;
+		--profile|-p) shift; PROFILE=$1 ;;
+		--version|-v) echo "${VERSION}"; exit 0 ;;
+		--) shift ; break ;;
+		*) die "$0: Internal error!" ;;
+	esac
+	shift
+done
+
+sourceConfig ${CONFIGFILE}
+validateProfile ${PROFILE}
+
+BASE_DIR="${CS_CHROOTS}/${PROFILE}"
+
+# Validate stage file
+[[ ! -f ${CS_DEFAULT_STAGE} ]] && die "stage file does not exist: ${CS_DEFAULT_STAGE}"
+
+# check install dir exists and not empty
+if [[ ! -d ${BASE_DIR} ]]; then
+	mkdir -p ${BASE_DIR} || die "creating chroot install dir: ${BASE_DIR}"
+elif [[ "$(ls -A ${BASE_DIR})" ]]; then
+	die "base dir not empty: ${BASE_DIR}"
+fi
+
+# Installing
+cd ${BASE_DIR}
+tar xvjpf ${CS_DEFAULT_STAGE} --xattrs
+
+mkdir ${BASE_DIR}/etc/portage/repos.conf
+if [[ -f ${BASE_DIR}/usr/share/portage/config/repos.conf ]]; then
+	cp ${BASE_DIR}/usr/share/portage/config/repos.conf ${BASE_DIR}/etc/portage/repos.conf/gentoo.conf
+fi
+
+cp -L /etc/resolv.conf ${BASE_DIR}/etc/
+
+# to bind host portage at chroot time
+mkdir -p ${BASE_DIR}/usr/portage
