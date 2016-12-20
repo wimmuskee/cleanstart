@@ -78,3 +78,6 @@ cp -L /etc/resolv.conf ${BASE_DIR}/etc/
 
 # to bind host portage at chroot time
 mkdir -p ${BASE_DIR}/usr/portage
+
+# make custom PS1
+echo "PS1='\[\033]0;\u@\h:\w\007\]\[\033[01;31m\]\h\[\033[01;34m\] \W \$ \[\033[01;33m\][chroot] \[\033[00m\]'" >> ${BASE_DIR}/root/.bashrc
