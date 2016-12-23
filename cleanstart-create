@@ -74,13 +74,11 @@ if [[ -f ${BASE_DIR}/usr/share/portage/config/repos.conf ]]; then
 	cp ${BASE_DIR}/usr/share/portage/config/repos.conf ${BASE_DIR}/etc/portage/repos.conf/gentoo.conf
 fi
 
-cp -L /etc/resolv.conf ${BASE_DIR}/etc/
-
-# to bind host portage at chroot time
-mkdir -p ${BASE_DIR}/usr/portage
+# set resolv and portage dir to bind mount
+setMisc ${BASE_DIR}
 
 # make custom PS1
-echo "PS1='\[\033]0;\u@\h:\w\007\]\[\033[01;31m\]\h\[\033[01;34m\] \W \$ \[\033[01;33m\][chroot] \[\033[00m\]'" >> ${BASE_DIR}/root/.bashrc
+setBashrc ${BASE_DIR}
 
 # creating local profile file
-createProfileFile "${PROFILEDIR}/${PROFILE}"
+setProfileFile "${PROFILEDIR}/${PROFILE}"
