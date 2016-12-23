@@ -52,6 +52,7 @@ done
 
 sourceConfig ${CONFIGFILE}
 validateProfile ${PROFILE}
+sourceProfile ${PROFILE}
 
 BASE_DIR="${CS_CHROOTS}/${PROFILE}"
 
@@ -64,16 +65,24 @@ mount --rbind /sys ${BASE_DIR}/sys
 mount --make-rslave ${BASE_DIR}/sys
 mount --rbind /dev ${BASE_DIR}/dev
 mount --make-rslave ${BASE_DIR}/dev
-mount --rbind /usr/portage ${BASE_DIR}/usr/portage
+mount --bind /usr/portage ${BASE_DIR}/usr/portage
+
+# bind mounting profile config mounts
+for line in ${BIND_MOUNTS}; do
+	src=$(echo $line | cut -d ":" -f 1)
+	target=$(echo $line | cut -d ":" -f 2)
+	
+	if checkBindmountDir ${src} && checkBindmountDir ${target}; then
+		mkdir -p ${BASE_DIR}${target}
+		mount --bind ${src} ${BASE_DIR}${target}
+	fi
+done
+
 
 chroot ${BASE_DIR} /bin/bash
 
 
 # and unmount stuff after running
-if [[ "${BASE_DIR}" == "" ]] || [[ "${BASE_DIR}" == "/" ]]; then
-    die "not unmounting stuff, empty basedir"
-fi
-
 MOUNTED_DIRS=$(mktemp)
 
 for dir in $(mount | grep ${BASE_DIR} | cut -d " " -f 3); do
