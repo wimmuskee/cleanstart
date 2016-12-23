@@ -19,3 +19,11 @@ function setProfileFile {
 		echo "source profile.default" > ${profilefile}
 	fi
 }
+
+# create cleanstart version stamp in chroot
+function setStamp {
+	local basedir=$1
+	local version=$2
+	echo "cleanstart-${version}" > ${basedir}/cleanstart
+	echo $(date -Iseconds) >> ${basedir}/cleanstart
+}

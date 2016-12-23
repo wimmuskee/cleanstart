@@ -1,6 +1,6 @@
 # This file is part of the cleanstart package.
 
-VERSION="0.3"
+VERSION="0.4"
 CONFIGFILE="/etc/cleanstart/cleanstart.conf"
 PROFILEDIR="/etc/cleanstart/profiles"
 

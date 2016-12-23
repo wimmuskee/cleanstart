@@ -82,3 +82,6 @@ setBashrc ${BASE_DIR}
 
 # creating local profile file
 setProfileFile "${PROFILEDIR}/${PROFILE}"
+
+# set a version/timestamp in the chroot
+setStamp ${BASE_DIR} ${VERSION}
