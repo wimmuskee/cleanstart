@@ -29,7 +29,7 @@ if [[ -f share/common.sh ]]; then
 fi
 
 source "${SHARE_PATH}/common.sh"
-
+source "${SHARE_PATH}/create.sh"
 
 # Reading options
 if ! args=$(getopt -n "$0" -o "c:hp:v" \
@@ -83,4 +83,4 @@ mkdir -p ${BASE_DIR}/usr/portage
 echo "PS1='\[\033]0;\u@\h:\w\007\]\[\033[01;31m\]\h\[\033[01;34m\] \W \$ \[\033[01;33m\][chroot] \[\033[00m\]'" >> ${BASE_DIR}/root/.bashrc
 
 # creating local profile file
-touch ${PROFILESDIR}/${PROFILE}
+createProfileFile "${PROFILEDIR}/${PROFILE}"

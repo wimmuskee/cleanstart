@@ -1,0 +1,6 @@
+# This file is part of cleanstart.
+# sourced by default for all new profiles
+
+# specify optional bind mounts for the chroot
+# format: each bind mount <src>:<target> on newline
+#BIND_MOUNTS="/var/tmp/portage:/var/tmp/portage"
