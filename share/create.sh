@@ -13,10 +13,11 @@ function setBashrc {
 
 # create new profile config file if not exists
 function setProfileFile {
-	local profilefile=$1
+	local profiledir=$1
+	local profile=$2
 
 	if [[ ! -f ${profilefile} ]]; then
-		echo "source profile.default" > ${profilefile}
+		echo "source ${profiledir}/profile.default" > ${profiledir}/${profile}
 	fi
 }
 
