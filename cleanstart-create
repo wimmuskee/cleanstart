@@ -67,7 +67,7 @@ fi
 
 # Installing
 cd ${BASE_DIR}
-tar xvjpf ${CS_DEFAULT_STAGE} --xattrs
+tar xpf ${CS_DEFAULT_STAGE} --xattrs-include='*.*' --numeric-owner
 
 mkdir ${BASE_DIR}/etc/portage/repos.conf
 if [[ -f ${BASE_DIR}/usr/share/portage/config/repos.conf ]]; then
