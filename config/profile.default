@@ -3,4 +3,6 @@
 
 # specify optional bind mounts for the chroot
 # format: each bind mount <src>:<target> on newline
-#BIND_MOUNTS="/var/tmp/portage:/var/tmp/portage"
+#BIND_MOUNTS="/var/db/repos/gentoo:/var/db/repos/gentoo
+#/var/cache/distfiles:/var/cache/distfiles
+#/var/tmp/portage:/var/tmp/portage"

@@ -2,7 +2,7 @@
 #
 # cleanstart-chroot is part of the cleanstart package
 #
-# Copyright 2016 Wim Muskee
+# Copyright 2016-2020 Wim Muskee
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,6 @@ mount --rbind /sys ${BASE_DIR}/sys
 mount --make-rslave ${BASE_DIR}/sys
 mount --rbind /dev ${BASE_DIR}/dev
 mount --make-rslave ${BASE_DIR}/dev
-mount --bind /usr/portage ${BASE_DIR}/usr/portage
 
 # bind mounting profile config mounts
 for line in ${BIND_MOUNTS}; do
