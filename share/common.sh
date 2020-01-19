@@ -14,7 +14,16 @@ function warn {
 }
 
 function usage {
-	echo "none yet, just read the code"
+cat <<EOF
+Usage: $0 [OPTION]
+
+Options:
+  -c, --config[=path]           Set application config. By default, then
+                                one in /etc/cleanstart/cleanstart.conf is used.
+  -h, --help                    Displays this help message.
+  -p, --profile[=id]            Uses the set profile.
+  -v, --version                 Displays the shell-oaiharvester version.
+EOF
 }
 
 function sourceConfig {
