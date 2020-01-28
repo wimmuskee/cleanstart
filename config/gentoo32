@@ -1,0 +1,7 @@
+# Use on amd64 environment hosting a x86 build chroot.
+
+source /etc/cleanstart/profiles/profile.default
+
+BIND_MOUNTS="/var/db/repos/gentoo:/var/db/repos/gentoo
+/var/cache/binpkgs/i686-pc-linux-gnu:/var/cache/binpkgs
+/var/cache/distfiles:/var/cache/distfiles"
